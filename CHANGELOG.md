@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/provably-fair-betting/verifierform-lib/compare/verifierform-lib-v1.0.0...verifierform-lib-v1.1.0) (2026-04-29)
+
+
+### Features
+
+* initial project setup ([0490fe2](https://github.com/provably-fair-betting/verifierform-lib/commit/0490fe2e60a12332ec4cbd9e43e20d4ec4a75c6a))
+
 ## [1.0.0] - 2026-04-29
 
 ### Features
