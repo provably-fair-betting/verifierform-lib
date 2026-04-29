@@ -1,6 +1,6 @@
 # 🧪 Provably Fair VerifierForm Lib
 
-![Vitest Lines Badge](https://gist.githubusercontent.com/Kyran121/3297558a26163acee4e360d24d9ea776/raw/lines-badge.svg) ![Vitest Branches Badge](https://gist.githubusercontent.com/Kyran121/3297558a26163acee4e360d24d9ea776/raw/branches-badge.svg)
+![Lines Coverage](badges/lines-coverage.svg) ![Branches Coverage](badges/branches-coverage.svg)
 
 A SvelteKit 2/Svelte 5 library that provides a reusable `VerifierForm` component for **quickly building provably fair verifiers** for crypto casino games.
 

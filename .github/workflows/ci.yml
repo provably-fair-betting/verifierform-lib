@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
+      contents: write
       pull-requests: write
 
     steps:
@@ -37,36 +37,34 @@ jobs:
       - name: Run E2E Tests
         run: pnpm run test:e2e
 
-      - name: Generate Lines Coverage Badge
-        uses: wjervis7/vitest-badge-action@v1.0.0
-        with:
-          result-type: lines
-          summary-path: coverage/coverage-summary.json
-          badge-path: lines-badge.svg
-          badge-text: 'Lines Coverage'
-          vitest-config-path: vite.config.ts
-          gist-token: ${{ secrets.GIST_TOKEN }}
-          gist-url: https://gist.github.com/Kyran121/3297558a26163acee4e360d24d9ea776
+      - name: Generate coverage badges
+        if: github.event_name == 'push'
+        run: |
+          mkdir -p badges
 
-      - name: Generate Branches Coverage Badge
-        uses: wjervis7/vitest-badge-action@v1.0.0
-        with:
-          result-type: branches
-          summary-path: coverage/coverage-summary.json
-          badge-path: branches-badge.svg
-          badge-text: 'Branches Coverage'
-          vitest-config-path: vite.config.ts
-          gist-token: ${{ secrets.GIST_TOKEN }}
-          gist-url: https://gist.github.com/Kyran121/3297558a26163acee4e360d24d9ea776
+          LINES=$(jq '.total.lines.pct' coverage/coverage-summary.json)
+          BRANCHES=$(jq '.total.branches.pct' coverage/coverage-summary.json)
 
-      - name: Upload Lines Coverage Badge Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-badge-lines
-          path: coverage/lines-badge.svg
+          color() {
+            awk -v p="$1" 'BEGIN{
+              if (p >= 90) print "brightgreen"
+              else if (p >= 75) print "yellow"
+              else if (p >= 50) print "orange"
+              else print "red"
+            }'
+          }
 
-      - name: Upload Branches Coverage Badge Artifact
-        uses: actions/upload-artifact@v4
+          LINES_COLOR=$(color "$LINES")
+          BRANCHES_COLOR=$(color "$BRANCHES")
+          LINES_MSG=$(echo "$LINES" | awk '{printf "%g%%25", $1}')
+          BRANCHES_MSG=$(echo "$BRANCHES" | awk '{printf "%g%%25", $1}')
+
+          curl -sf "https://img.shields.io/badge/Lines%20Coverage-${LINES_MSG}-${LINES_COLOR}.svg" -o badges/lines-coverage.svg
+          curl -sf "https://img.shields.io/badge/Branches%20Coverage-${BRANCHES_MSG}-${BRANCHES_COLOR}.svg" -o badges/branches-coverage.svg
+
+      - name: Commit coverage badges
+        if: github.event_name == 'push'
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          name: coverage-badge-branches
-          path: coverage/branches-badge.svg
+          commit_message: 'chore: update coverage badges [skip ci]'
+          file_pattern: badges/*.svg
