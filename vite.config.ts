@@ -32,7 +32,7 @@ export default defineConfig({
     ],
     coverage: {
       enabled: true,
-      reporter: ['html', 'json-summary'],
+      reporter: ['html', 'json-summary', 'lcov'],
       include: ['**/src/lib/verifier/**'],
     },
   },

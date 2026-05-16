@@ -9,66 +9,49 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-      pull-requests: write
+    if: ${{ !startsWith(github.head_ref, 'release-please--') }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - uses: pnpm/action-setup@v4
+          cache: pnpm
 
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm install --frozen-lockfile
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Run Unit Tests with Coverage
-        run: pnpm run test:unit -- --coverage.enabled --coverage.reporter=json-summary
+      - name: Run unit tests with coverage
+        run: pnpm run test:unit -- --run
 
-      - name: Run E2E Tests
+      - name: Run E2E tests
         run: pnpm run test:e2e
 
-      - name: Generate coverage badges
+      - name: Upload coverage to Codecov
         if: github.event_name == 'push'
-        run: |
-          mkdir -p badges
-
-          LINES=$(jq '.total.lines.pct' coverage/coverage-summary.json)
-          BRANCHES=$(jq '.total.branches.pct' coverage/coverage-summary.json)
-
-          color() {
-            awk -v p="$1" 'BEGIN{
-              if (p >= 90) print "brightgreen"
-              else if (p >= 75) print "yellow"
-              else if (p >= 50) print "orange"
-              else print "red"
-            }'
-          }
-
-          LINES_COLOR=$(color "$LINES")
-          BRANCHES_COLOR=$(color "$BRANCHES")
-          LINES_MSG=$(echo "$LINES" | awk '{printf "%g%%25", $1}')
-          BRANCHES_MSG=$(echo "$BRANCHES" | awk '{printf "%g%%25", $1}')
-
-          curl -sf "https://img.shields.io/badge/Lines%20Coverage-${LINES_MSG}-${LINES_COLOR}.svg" -o badges/lines-coverage.svg
-          curl -sf "https://img.shields.io/badge/Branches%20Coverage-${BRANCHES_MSG}-${BRANCHES_COLOR}.svg" -o badges/branches-coverage.svg
-
-          VERSION=$(jq -r '.version' package.json)
-          VERSION_MSG=$(echo "$VERSION" | sed 's/-/%E2%80%93/g')
-          curl -sf "https://img.shields.io/badge/version-v${VERSION_MSG}-blue.svg" -o badges/version.svg
-
-      - name: Commit coverage badges
-        if: github.event_name == 'push'
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: codecov/codecov-action@v5
         with:
-          commit_message: 'chore: update badges [skip ci]'
-          file_pattern: badges/*.svg
+          files: coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: provably-fair-betting/verifierform-lib
+
+  ci-complete:
+    runs-on: ubuntu-latest
+    needs: test
+    if: always()
+    steps:
+      - name: Check test results
+        run: |
+          if [[ "${{ needs.test.result }}" == "success" || "${{ needs.test.result }}" == "skipped" ]]; then
+            echo "CI complete"
+          else
+            exit 1
+          fi

@@ -1,6 +1,6 @@
 # 🧪 Provably Fair VerifierForm Lib
 
-![Version](badges/version.svg) ![Lines Coverage](badges/lines-coverage.svg) ![Branches Coverage](badges/branches-coverage.svg)
+[![CI](https://github.com/provably-fair-betting/verifierform-lib/actions/workflows/ci.yml/badge.svg)](https://github.com/provably-fair-betting/verifierform-lib/actions/workflows/ci.yml) [![Version](https://img.shields.io/github/v/release/provably-fair-betting/verifierform-lib)](https://github.com/provably-fair-betting/verifierform-lib/releases/latest) [![Coverage](https://codecov.io/gh/provably-fair-betting/verifierform-lib/graph/badge.svg)](https://codecov.io/gh/provably-fair-betting/verifierform-lib)
 
 A SvelteKit 2/Svelte 5 library that provides a reusable `VerifierForm` component for **quickly building provably fair verifiers** for crypto casino games.
 
