@@ -1,6 +1,6 @@
 {
   "name": "verifierform-lib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "SvelteKit component library for building provably fair game verifiers",
   "scripts": {
     "dev": "vite dev",
