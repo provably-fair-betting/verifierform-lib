@@ -436,7 +436,7 @@ describe('VerifierForm Component', () => {
   });
 
   function getGameTrigger() {
-    return screen.getByRole('button', { name: /select game/i });
+    return screen.getByRole('button', { name: /^select game:/i });
   }
 
   async function selectGame(user: ReturnType<typeof userEvent.setup>, gameId: string) {

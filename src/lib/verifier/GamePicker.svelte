@@ -68,7 +68,7 @@
     onclick={toggle}
     aria-haspopup="listbox"
     aria-expanded={open}
-    aria-label="Select game"
+    aria-label="Select game: {selected?.name ?? 'no game selected'}"
     class="flex w-full items-center gap-3 border-b border-gray-300 bg-transparent py-2 text-left focus:border-purple-400 focus:ring-0 focus:outline-none dark:border-gray-600"
   >
     {#if selected?.image}
@@ -101,6 +101,7 @@
     <div
       class="absolute top-full right-0 left-0 z-50 mt-1 rounded-lg border border-gray-200 bg-white p-3 shadow-lg dark:border-gray-700 dark:bg-gray-900"
       role="listbox"
+      aria-label="Game selection"
     >
       <!-- Search -->
       <div class="relative mb-3">
