@@ -180,13 +180,32 @@
 </div>
 
 <style>
+  /* Always-visible scrollbar with consistent styling across light/dark */
   .game-scroll {
+    scrollbar-width: thin;
     scrollbar-color: #d1d5db transparent;
+  }
+
+  .game-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .game-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .game-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
   }
 
   @media (prefers-color-scheme: dark) {
     .game-scroll {
       scrollbar-color: #4b5563 transparent;
+    }
+
+    .game-scroll::-webkit-scrollbar-thumb {
+      background: #4b5563;
     }
   }
 </style>
