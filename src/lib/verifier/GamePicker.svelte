@@ -11,19 +11,77 @@
     onselect: (gameId: string) => void;
   } = $props();
 
+  let open = $state(false);
   let search = $state('');
+  let containerEl: HTMLElement | null = $state(null);
+  let searchEl: HTMLInputElement | null = $state(null);
+
+  const selected = $derived(games[selectedGame]);
 
   const filtered = $derived(
     Object.entries(games).filter(([, entry]) =>
       entry.name.toLowerCase().includes(search.toLowerCase()),
     ),
   );
+
+  function pick(gameId: string) {
+    onselect(gameId);
+    open = false;
+    search = '';
+  }
+
+  function toggle() {
+    open = !open;
+    if (open) {
+      search = '';
+      // Focus search on next tick
+      setTimeout(() => searchEl?.focus(), 0);
+    }
+  }
+
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key === 'Escape') {
+      open = false;
+      search = '';
+    }
+  }
+
+  $effect(() => {
+    if (!open) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (containerEl && !containerEl.contains(e.target as Node)) {
+        open = false;
+        search = '';
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  });
 </script>
 
-<div>
-  <div class="relative mb-3">
+<svelte:window onkeydown={handleKeydown} />
+
+<div class="relative" bind:this={containerEl}>
+  <!-- Trigger -->
+  <button
+    type="button"
+    onclick={toggle}
+    aria-haspopup="listbox"
+    aria-expanded={open}
+    class="flex w-full items-center gap-3 border-b border-gray-300 bg-transparent py-2 text-left focus:border-purple-400 focus:ring-0 focus:outline-none dark:border-gray-600"
+  >
+    {#if selected?.image}
+      <img
+        src={selected.image}
+        alt={selected.name}
+        class="h-8 w-8 flex-shrink-0 rounded object-cover"
+      />
+    {/if}
+    <span class="flex-1 text-sm font-medium text-gray-900 dark:text-white">
+      {selected?.name ?? 'Select a game'}
+    </span>
     <svg
-      class="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500"
+      class={['h-4 w-4 flex-shrink-0 text-gray-400 transition-transform', open ? 'rotate-180' : '']}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       fill="currentColor"
@@ -31,62 +89,90 @@
     >
       <path
         fill-rule="evenodd"
-        d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+        d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
         clip-rule="evenodd"
       />
     </svg>
-    <input
-      type="search"
-      bind:value={search}
-      placeholder="Search games…"
-      aria-label="Search games"
-      class="block w-full rounded-md border border-gray-200 bg-gray-50 py-2 pr-3 pl-9 text-sm text-gray-900 placeholder-gray-400 focus:border-purple-400 focus:ring-0 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500"
-    />
-  </div>
+  </button>
 
-  {#if filtered.length === 0}
-    <p class="py-6 text-center text-sm text-gray-400 dark:text-gray-500">No games found.</p>
-  {:else}
-    <div class="grid grid-cols-3 gap-2 sm:grid-cols-4">
-      {#each filtered as [gameId, entry] (gameId)}
-        {@const isSelected = gameId === selectedGame}
-        <button
-          type="button"
-          onclick={() => onselect(gameId)}
-          class={[
-            'group flex flex-col items-center overflow-hidden rounded-lg border-2 transition-all focus:ring-2 focus:ring-purple-400 focus:ring-offset-1 focus:outline-none',
-            isSelected
-              ? 'border-purple-500 shadow-md dark:border-purple-400'
-              : 'border-transparent hover:border-gray-300 dark:hover:border-gray-600',
-          ]}
-          aria-pressed={isSelected}
+  <!-- Popover -->
+  {#if open}
+    <div
+      class="absolute top-full left-0 right-0 z-50 mt-1 rounded-lg border border-gray-200 bg-white p-3 shadow-lg dark:border-gray-700 dark:bg-gray-900"
+      role="listbox"
+    >
+      <!-- Search -->
+      <div class="relative mb-3">
+        <svg
+          class="pointer-events-none absolute top-1/2 left-2.5 h-3.5 w-3.5 -translate-y-1/2 text-gray-400"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
         >
-          {#if entry.image}
-            <img
-              src={entry.image}
-              alt={entry.name}
-              class="aspect-[3/4] w-full object-cover"
-              loading="lazy"
-            />
-          {:else}
-            <div
-              class="flex aspect-[3/4] w-full items-center justify-center bg-gray-100 text-2xl font-bold text-gray-400 dark:bg-gray-800 dark:text-gray-600"
+          <path
+            fill-rule="evenodd"
+            d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        <input
+          bind:this={searchEl}
+          type="search"
+          bind:value={search}
+          placeholder="Search games…"
+          aria-label="Search games"
+          class="block w-full rounded border border-gray-200 bg-gray-50 py-1.5 pr-2 pl-8 text-xs text-gray-900 placeholder-gray-400 focus:border-purple-400 focus:ring-0 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-500"
+        />
+      </div>
+
+      <!-- Grid -->
+      {#if filtered.length === 0}
+        <p class="py-4 text-center text-xs text-gray-400 dark:text-gray-500">No games found.</p>
+      {:else}
+        <div class="grid max-h-64 grid-cols-4 gap-1.5 overflow-y-auto sm:grid-cols-5">
+          {#each filtered as [gameId, entry] (gameId)}
+            {@const isSelected = gameId === selectedGame}
+            <button
+              type="button"
+              role="option"
+              aria-selected={isSelected}
+              onclick={() => pick(gameId)}
+              class={[
+                'group flex flex-col items-center overflow-hidden rounded-md border-2 transition-all focus:ring-2 focus:ring-purple-400 focus:outline-none',
+                isSelected
+                  ? 'border-purple-500 dark:border-purple-400'
+                  : 'border-transparent hover:border-gray-300 dark:hover:border-gray-600',
+              ]}
             >
-              {entry.name[0].toUpperCase()}
-            </div>
-          {/if}
-          <span
-            class={[
-              'w-full truncate px-1 py-1 text-center text-xs font-medium',
-              isSelected
-                ? 'bg-purple-500 text-white dark:bg-purple-500'
-                : 'bg-gray-100 text-gray-700 group-hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:group-hover:bg-gray-700',
-            ]}
-          >
-            {entry.name}
-          </span>
-        </button>
-      {/each}
+              {#if entry.image}
+                <img
+                  src={entry.image}
+                  alt={entry.name}
+                  class="aspect-[3/4] w-full object-cover"
+                  loading="lazy"
+                />
+              {:else}
+                <div
+                  class="flex aspect-[3/4] w-full items-center justify-center bg-gray-100 text-lg font-bold text-gray-400 dark:bg-gray-800 dark:text-gray-600"
+                >
+                  {entry.name[0].toUpperCase()}
+                </div>
+              {/if}
+              <span
+                class={[
+                  'w-full truncate px-0.5 py-0.5 text-center text-[10px] font-medium leading-tight',
+                  isSelected
+                    ? 'bg-purple-500 text-white'
+                    : 'bg-gray-100 text-gray-600 group-hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:group-hover:bg-gray-700',
+                ]}
+              >
+                {entry.name}
+              </span>
+            </button>
+          {/each}
+        </div>
+      {/if}
     </div>
   {/if}
 </div>
