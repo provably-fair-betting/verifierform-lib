@@ -130,7 +130,7 @@
       {#if filtered.length === 0}
         <p class="py-4 text-center text-xs text-gray-400 dark:text-gray-500">No games found.</p>
       {:else}
-        <div class="max-h-64 overflow-y-auto pr-4">
+        <div class="game-scroll max-h-64 overflow-y-auto pr-4">
           <div class="grid grid-cols-4 gap-1.5 sm:grid-cols-5">
           {#each filtered as [gameId, entry] (gameId)}
             {@const isSelected = gameId === selectedGame}
@@ -178,3 +178,15 @@
     </div>
   {/if}
 </div>
+
+<style>
+  .game-scroll {
+    scrollbar-color: #d1d5db transparent;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .game-scroll {
+      scrollbar-color: #4b5563 transparent;
+    }
+  }
+</style>
