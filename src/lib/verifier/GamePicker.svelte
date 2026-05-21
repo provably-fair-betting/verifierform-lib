@@ -99,7 +99,7 @@
   <!-- Popover -->
   {#if open}
     <div
-      class="absolute top-full right-0 left-0 z-50 mt-1 rounded-lg border border-gray-200 bg-gray-200 p-3 shadow-lg dark:border-gray-700 dark:bg-gray-900"
+      class="absolute top-full right-0 left-0 z-50 mt-1 rounded-lg border border-gray-200 bg-gray-100 p-3 shadow-lg dark:border-gray-700 dark:bg-gray-900"
       role="group"
       aria-label="Game selection"
     >
@@ -167,7 +167,7 @@
                     'w-full truncate px-0.5 py-0.5 text-center text-[10px] leading-tight font-medium',
                     isSelected
                       ? 'bg-purple-500 text-white'
-                      : 'bg-gray-300 text-gray-600 group-hover:bg-gray-400 dark:bg-gray-800 dark:text-gray-400 dark:group-hover:bg-gray-700',
+                      : 'bg-gray-200 text-gray-600 group-hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-400 dark:group-hover:bg-gray-700',
                   ]}
                 >
                   {entry.name}
