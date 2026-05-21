@@ -69,7 +69,7 @@
     aria-haspopup="true"
     aria-expanded={open}
     aria-label="Select game: {selected?.name ?? 'no game selected'}"
-    class="flex w-full items-center gap-3 border-b border-gray-300 bg-transparent py-2 text-left focus:border-purple-400 focus:ring-0 focus:outline-none dark:border-gray-600"
+    class="flex w-full items-center gap-3 rounded-lg border border-gray-200 bg-gray-100 px-3 py-2 text-left hover:bg-gray-300 focus:border-purple-400 focus:ring-0 focus:outline-none dark:border-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600"
   >
     {#if selected?.image}
       <img
@@ -99,7 +99,7 @@
   <!-- Popover -->
   {#if open}
     <div
-      class="absolute top-full right-0 left-0 z-50 mt-1 rounded-lg border border-gray-200 bg-white p-3 shadow-lg dark:border-gray-700 dark:bg-gray-900"
+      class="absolute top-full right-0 left-0 z-50 mt-1 rounded-lg border border-gray-200 bg-gray-50 p-3 shadow-lg dark:border-gray-700 dark:bg-gray-900"
       role="group"
       aria-label="Game selection"
     >
