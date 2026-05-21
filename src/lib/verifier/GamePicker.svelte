@@ -167,7 +167,7 @@
                     'w-full truncate px-0.5 py-0.5 text-center text-[10px] leading-tight font-medium',
                     isSelected
                       ? 'bg-purple-500 text-white'
-                      : 'bg-gray-300 text-gray-700 group-hover:bg-gray-400 dark:bg-gray-800 dark:text-gray-400 dark:group-hover:bg-gray-700',
+                      : 'bg-gray-200 text-gray-700 group-hover:bg-purple-100 group-hover:text-purple-700 dark:bg-gray-800 dark:text-gray-400 dark:group-hover:bg-purple-900',
                   ]}
                 >
                   {entry.name}
