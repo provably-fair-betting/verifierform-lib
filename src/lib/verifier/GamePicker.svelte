@@ -144,7 +144,7 @@
                 class={[
                   'group flex flex-col items-center overflow-hidden rounded-md border-2 transition-all focus:ring-2 focus:ring-purple-400 focus:outline-none',
                   isSelected
-                    ? 'border-purple-500 dark:border-purple-400'
+                    ? 'border-purple-500 dark:border-purple-300'
                     : 'border-transparent hover:border-gray-300 dark:hover:border-gray-600',
                 ]}
               >
@@ -166,7 +166,7 @@
                   class={[
                     'w-full truncate px-0.5 py-0.5 text-center text-[10px] leading-tight font-medium',
                     isSelected
-                      ? 'bg-purple-500 text-white'
+                      ? 'bg-purple-500 text-white dark:bg-purple-400'
                       : 'bg-gray-300 text-gray-700 group-hover:bg-gray-400 dark:bg-gray-800 dark:text-gray-400 dark:group-hover:bg-gray-700',
                   ]}
                 >
