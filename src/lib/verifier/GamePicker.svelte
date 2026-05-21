@@ -143,9 +143,7 @@
                 onclick={() => pick(gameId)}
                 class={[
                   'group flex flex-col items-center overflow-hidden rounded-md border-2 transition-all focus:ring-2 focus:ring-purple-400 focus:outline-none',
-                  isSelected
-                    ? 'border-purple-500 dark:border-purple-400'
-                    : 'border-transparent',
+                  isSelected ? 'border-purple-500 dark:border-purple-400' : 'border-transparent',
                 ]}
               >
                 {#if entry.image}
