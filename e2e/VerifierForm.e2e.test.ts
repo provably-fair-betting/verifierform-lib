@@ -11,7 +11,7 @@ async function selectGame(page: import('@playwright/test').Page, gameName: strin
 
 test.describe('VerifierForm E2E Tests', () => {
   test('computes result for game when all required fields are given', async ({ page }) => {
-    page.goto('/');
+    await page.goto('/');
 
     const results = ['93.08', '0.61', '71.73'];
     const formulas = [
@@ -60,7 +60,7 @@ test.describe('VerifierForm E2E Tests', () => {
   });
 
   test('required fields reset when game is changed', async ({ page }) => {
-    page.goto('/');
+    await page.goto('/');
 
     const gameTrigger = page.getByRole('button', { name: /^select game:/i });
     await expect(gameTrigger).toContainText('Dice');

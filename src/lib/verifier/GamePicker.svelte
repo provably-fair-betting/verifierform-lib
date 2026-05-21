@@ -66,7 +66,7 @@
   <button
     type="button"
     onclick={toggle}
-    aria-haspopup="true"
+    aria-haspopup="dialog"
     aria-expanded={open}
     aria-label="Select game: {selected?.name ?? 'no game selected'}"
     class="flex w-full items-center gap-3 rounded-lg border border-gray-200 bg-gray-100 px-3 py-2 text-left hover:bg-gray-300 focus:border-purple-400 focus:ring-0 focus:outline-none dark:border-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600"
