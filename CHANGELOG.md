@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/provably-fair-betting/verifierform-core/compare/v1.1.0...v2.0.0) (2026-05-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* published package is now installed as github:provably-fair-betting/verifierform-core and imported as 'verifierform-core'
+
+### Features
+
+* rename project to verifierform-core ([d162d43](https://github.com/provably-fair-betting/verifierform-core/commit/d162d4338b5af1dcc6bebd2112c14d0c732f34ab))
+
 ## [1.1.0](https://github.com/provably-fair-betting/verifierform-lib/compare/v1.0.1...v1.1.0) (2026-05-23)
 
 
