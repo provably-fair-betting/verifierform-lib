@@ -146,15 +146,25 @@
                 ]}
               >
                 {#if entry.image}
-                  <img
-                    src={entry.image}
-                    alt={entry.name}
-                    class="aspect-[3/4] w-full object-cover"
-                    loading="lazy"
-                  />
+                  <div class="relative w-full">
+                    <img
+                      src={entry.image}
+                      alt={entry.name}
+                      class="aspect-3/4 w-full object-cover"
+                      loading="lazy"
+                    />
+                    <div
+                      class={[
+                        'absolute inset-0 transition-colors duration-150',
+                        isSelected
+                          ? 'bg-purple-500/50'
+                          : 'bg-transparent group-hover:bg-purple-500/30',
+                      ]}
+                    />
+                  </div>
                 {:else}
                   <div
-                    class="flex aspect-[3/4] w-full items-center justify-center bg-gray-100 text-lg font-bold text-gray-400 dark:bg-gray-800 dark:text-gray-600"
+                    class="flex aspect-3/4 w-full items-center justify-center bg-gray-100 text-lg font-bold text-gray-400 dark:bg-gray-800 dark:text-gray-600"
                   >
                     {entry.name[0].toUpperCase()}
                   </div>
