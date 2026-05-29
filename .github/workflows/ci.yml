@@ -63,7 +63,7 @@ jobs:
         with:
           files: coverage/lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: provably-fair-betting/verifierform-lib
+          slug: provably-fair-betting/verifierform-core
 
   ci-complete:
     runs-on: ubuntu-latest

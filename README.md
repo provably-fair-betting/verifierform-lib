@@ -1,6 +1,6 @@
-# 🧪 Provably Fair VerifierForm Lib
+# 🧪 Provably Fair VerifierForm Core
 
-[![CI](https://github.com/provably-fair-betting/verifierform-lib/actions/workflows/ci.yml/badge.svg)](https://github.com/provably-fair-betting/verifierform-lib/actions/workflows/ci.yml) [![Version](https://img.shields.io/github/v/release/provably-fair-betting/verifierform-lib)](https://github.com/provably-fair-betting/verifierform-lib/releases/latest) [![Coverage](https://codecov.io/gh/provably-fair-betting/verifierform-lib/graph/badge.svg)](https://codecov.io/gh/provably-fair-betting/verifierform-lib)
+[![CI](https://github.com/provably-fair-betting/verifierform-core/actions/workflows/ci.yml/badge.svg)](https://github.com/provably-fair-betting/verifierform-core/actions/workflows/ci.yml) [![Version](https://img.shields.io/github/v/release/provably-fair-betting/verifierform-core)](https://github.com/provably-fair-betting/verifierform-core/releases/latest) [![Coverage](https://codecov.io/gh/provably-fair-betting/verifierform-core/graph/badge.svg)](https://codecov.io/gh/provably-fair-betting/verifierform-core)
 
 A SvelteKit 2/Svelte 5 library that provides a reusable `VerifierForm` component for **quickly building provably fair verifiers** for crypto casino games.
 
@@ -68,7 +68,7 @@ tests/
 The library ships with a SvelteKit dev playground that shows several games wired up to `VerifierForm`. It's the quickest way to see the component in action and develop against it.
 
 ```bash
-cd verifierform-lib
+cd verifierform-core
 pnpm install
 pnpm dev
 ```
@@ -88,49 +88,30 @@ The Dice game is the most complete demo — it shows a full result component and
 Install directly from GitHub, pinned to a release tag:
 
 ```bash
-pnpm add github:provably-fair-betting/verifierform-lib#v1.0.0
+pnpm add github:provably-fair-betting/verifierform-core#v1.0.0
 ```
 
 This fetches the pre-built `dist/` included in the tag — no local clone or build step required. pnpm caches the result so subsequent installs are instant. The dependency is recorded in `package.json` as:
 
 ```json
-"verifierform-lib": "github:provably-fair-betting/verifierform-lib#v1.0.0"
+"verifierform-core": "github:provably-fair-betting/verifierform-core#v1.0.0"
 ```
 
-Other contributors only need `pnpm install` as normal, provided their GitHub account has access to the `provably-fair-betting` org and an SSH key configured.
+Other contributors only need `pnpm install` as normal.
 
 ### Upgrading
 
 ```bash
-pnpm add github:provably-fair-betting/verifierform-lib#v1.1.0
+pnpm add github:provably-fair-betting/verifierform-core#v1.1.0
 ```
 
-Check [CHANGELOG.md](https://github.com/provably-fair-betting/verifierform-lib/blob/main/CHANGELOG.md) for what changed between versions.
-
-### CI setup (one-time per consuming repo)
-
-GitHub Actions runners don't have SSH access to the private lib by default. Add a deploy key once:
-
-1. Generate a key pair (no passphrase):
-   ```bash
-   ssh-keygen -t ed25519 -C "verifierform-lib deploy key" -f verifierform_deploy_key
-   ```
-2. Add the **public key** (`verifierform_deploy_key.pub`) as a read-only deploy key on this repo:
-   `Settings → Deploy keys → Add deploy key`
-3. Add the **private key** contents as a secret named `VERIFIERFORM_LIB_DEPLOY_KEY` on the consuming repo:
-   `Settings → Secrets and variables → Actions → New repository secret`
-4. Add this step to the consuming repo's workflow **before** `pnpm install`:
-   ```yaml
-   - uses: webfactory/ssh-agent@v0.9.0
-     with:
-       ssh-private-key: ${{ secrets.VERIFIERFORM_LIB_DEPLOY_KEY }}
-   ```
+Check [CHANGELOG.md](https://github.com/provably-fair-betting/verifierform-core/blob/main/CHANGELOG.md) for what changed between versions.
 
 ### Importing
 
 ```ts
-import { VerifierForm } from 'verifierform-lib';
-import type { GameEntry, GameDefinition, Control } from 'verifierform-lib';
+import { VerifierForm } from 'verifierform-core';
+import type { GameEntry, GameDefinition, Control } from 'verifierform-core';
 ```
 
 ---
@@ -143,7 +124,7 @@ Each game is described by a `GameDefinition` and registered via a `GameEntry` th
 
 ```ts
 import { z } from 'zod';
-import type { GameDefinition } from 'verifierform-lib';
+import type { GameDefinition } from 'verifierform-core';
 import DiceResult from './DiceResult.svelte';
 import DiceExplanation from './DiceExplanation.svelte';
 
@@ -169,7 +150,7 @@ export const gameDefinition: GameDefinition = {
 Wrap each definition in a `GameEntry` so `VerifierForm` can load it on demand:
 
 ```ts
-import type { GameEntry } from 'verifierform-lib';
+import type { GameEntry } from 'verifierform-core';
 
 const games: Record<string, GameEntry> = {
   dice: {
