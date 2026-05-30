@@ -287,14 +287,3 @@ pnpm build
 ```
 
 Outputs to `dist/`. The entry point is `dist/index.js` with type declarations at `dist/index.d.ts`. Run `publint` automatically as part of the build to verify the package exports are correctly declared.
-
----
-
-## 🔧 Built With
-
-- [Svelte 5](https://svelte.dev)
-- [SvelteKit 2](https://kit.svelte.dev)
-- [Tailwind CSS](https://tailwindcss.com)
-- [Zod](https://zod.dev)
-- [Vitest](https://vitest.dev)
-- [@testing-library/svelte](https://testing-library.com/docs/svelte-testing-library/intro)
