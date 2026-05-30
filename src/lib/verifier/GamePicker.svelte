@@ -163,7 +163,7 @@
                     />
                     {#if isSelected}
                       <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="flex h-7 w-7 items-center justify-center rounded-full bg-purple-600 ring-2 ring-purple-900 shadow-lg">
+                        <div class="flex h-7 w-7 items-center justify-center rounded-full bg-purple-600 ring-1 ring-purple-900 shadow-lg">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 20 20"
